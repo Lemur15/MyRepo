@@ -7,71 +7,93 @@
 
 import UIKit
 import Alamofire
-import SwiftyJSON
 import RealmSwift
 
 class ViewController: UIViewController, UITableViewDelegate {
-
-    @IBOutlet private weak var table: UITableView!
     
     @IBOutlet private weak var getDataButton: UIButton!
     
     @IBOutlet private weak var anyLabel: UILabel!
     
-    private var models = [Weather]()
+    private var weatherModels = [WelcomeJson]()
     
-    let realm = try! Realm()
-    lazy var testModels: Results<WeatherRealm> = { self.realm.objects(WeatherRealm.self)}()
+    lazy var realm: Realm = {
+        do {
+            return try Realm()
+        } catch {
+            let message: String = "Unable to create realm instance \(error)"
+            assertionFailure(message)
+            preconditionFailure(message)
+        }
+    }()
+    
+    lazy var realmModel: Results<WeatherDB> = { self.realm.objects(WeatherDB.self)}()
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     @IBAction func getDataButtonTapped(_ sender: Any) {
-        Alamofire.request("https://api.openweathermap.org/data/2.5/weather?id=8261417&appid=b636992ae3b73b91aef4efedf2b2ad42").responseJSON { response in
-            if response.result.isSuccess {
-                let data = JSON(response.value)
-                
-                let weatherJson = data["weather"].arrayValue
-                
-                for weather in weatherJson {
-                 let currentWeather = Weather(json: weather)
-                    print(currentWeather)
-                    self.models.append(currentWeather)
-                }
-            } else {
-                print(response.result.error.debugDescription)
-            }
-        }
-        defaultWeatherModels()
-        anyLabel.text = testModels.first?.main
+        fetchAllWeathers()
     }
     
-    private func defaultWeatherModels() {
+    func fetchAllWeathers() {
         
-        if testModels.count == 0 {
-            try! realm.write() {
-                let defaultWeathers = ["Birds", "Mammals", "Flora", "Reptiles", "Arachnids"]
-                
-                for weather in defaultWeathers {
-                    let newWeather = WeatherRealm()
-                    newWeather.main = weather
-                    self.realm.add(newWeather)
+        let url = "https://api.openweathermap.org/data/2.5/weather?id=8261417&appid=b636992ae3b73b91aef4efedf2b2ad42"
+        
+        Alamofire.request(url).responseData { dataResponse in
+            
+            if let err = dataResponse.error {
+                print("Server error is: ", err)
+                return
+            }
+            
+            guard let data = dataResponse.data else { return }
+            do {
+                let searchResult = try JSONDecoder().decode(WelcomeJson.self, from: data)
+                guard let weatherModel = searchResult.weather else { return }
+                self.defaultWeatherModels(json: weatherModel)
+                self.weatherModels.append(searchResult)
+            }
+            catch let decodeError {
+                print("Failed to decode", decodeError)
+            }
+            self.anyLabel.text = self.realmModel.first?.main
+        }
+    }
+    
+    
+    
+    private func defaultWeatherModels(json: WeatherJson) {
+        
+        if realmModel.isEmpty {
+            do {
+                try realm.write() {
+                    let defaultValues = ["Birds", "Mammals", "Flora", "Reptiles", "Arachnids"]
+                    
+                    for weather in defaultValues {
+                        let newDBModel = WeatherDB()
+                        newDBModel.weatherDescription = weather
+                        self.realm.add(newDBModel)
+                    }
                 }
+            } catch {
+                let message: String = "Unable to create realm instance \(error)"
+                assertionFailure(message)
+                preconditionFailure(message)
+            }
+        } else {
+            do {
+                try realm.write() {
+                    let newDB = WeatherDB(json: json)
+                    self.realm.add(newDB)
+                }
+            } catch {
+                let message: String = "Unable to create realm instance \(error)"
+                assertionFailure(message)
+                preconditionFailure(message)
             }
         }
-        testModels = realm.objects(WeatherRealm.self)
+        realmModel = realm.objects(WeatherDB.self)
     }
-}
-
-extension ViewController: UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return models.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
-    }
-    
 }
