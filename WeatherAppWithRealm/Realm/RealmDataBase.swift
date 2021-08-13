@@ -10,7 +10,7 @@ import RealmSwift
 
 final class RealmDataBase {
     
-    lazy var shared: Realm = {
+    lazy var realm: Realm = {
         do {
             return try Realm()
         } catch {
@@ -20,5 +20,32 @@ final class RealmDataBase {
         }
     }()
     
-    lazy var realmWeatherModel: Results<WeatherDB> = { self.shared.objects(WeatherDB.self)}()
+    lazy var realmWeatherModel: Results<WeatherDB> = { self.realm.objects(WeatherDB.self)}()
+    
+    func deleteAllObjects() {
+        do {
+            try realm.write() {
+                realm.deleteAll()
+            }
+        } catch {
+            let message: String = "Unable to create realm instance \(error)"
+            assertionFailure(message)
+            preconditionFailure(message)
+        }
+    }
+    
+     func saveCodablaModelToDatabase(json: WeatherJson) {
+        do {
+            try realm.write() {
+                let newDB = WeatherDB(json: json)
+                realm.add(newDB)
+            }
+        } catch {
+            let message: String = "Unable to create realm instance \(error)"
+            assertionFailure(message)
+            preconditionFailure(message)
+        }
+        
+        self.realmWeatherModel = realm.objects(WeatherDB.self)
+    }
 }
