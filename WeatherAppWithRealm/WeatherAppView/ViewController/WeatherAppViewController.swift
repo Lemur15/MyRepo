@@ -7,12 +7,10 @@
 
 import UIKit
 
-protocol WeatherDescriptionViewControllerProtocol {
-    
-    func setAboutWeatherLabelText(with text: String)
-}
-
-final class WeatherAppViewController: UIViewController, WeatherDescriptionViewControllerProtocol {
+final class WeatherAppViewController: UIViewController, WeatherAppViewControllerProtocol {
+    func updateLable(text: String?) {
+        self.anyLabel.text = text
+    }
     
     private var presenter: WeatherAppPresenter!
     
@@ -20,12 +18,15 @@ final class WeatherAppViewController: UIViewController, WeatherDescriptionViewCo
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         presenter = WeatherAppPresenter(view: self)
-        presenter.configureView()
+        presenter.delegate = self
+        
+        self.presenter.configureView()
     }
     
     func setAboutWeatherLabelText(with text: String) {
-        
+    
         anyLabel.text = text
     }
 }

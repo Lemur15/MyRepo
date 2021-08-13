@@ -19,7 +19,7 @@
 		D74C35DE26C55E6500823255 /* RealmDataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74C35DD26C55E6500823255 /* RealmDataBase.swift */; };
 		D74C35E026C565AC00823255 /* Interactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74C35DF26C565AC00823255 /* Interactor.swift */; };
 		D74C35E526C566B400823255 /* WeatherAppPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74C35E426C566B400823255 /* WeatherAppPresenter.swift */; };
-		D74C35EB26C56B4300823255 /* WeatherAppInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74C35EA26C56B4300823255 /* WeatherAppInteractor.swift */; };
+		D74C35EB26C56B4300823255 /* NetworkLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74C35EA26C56B4300823255 /* NetworkLayer.swift */; };
 		D7A6904F26C4212700EE3F1E /* WeatherRealmModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A6904E26C4212700EE3F1E /* WeatherRealmModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -40,7 +40,7 @@
 		D74C35DD26C55E6500823255 /* RealmDataBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDataBase.swift; sourceTree = "<group>"; };
 		D74C35DF26C565AC00823255 /* Interactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.swift; sourceTree = "<group>"; };
 		D74C35E426C566B400823255 /* WeatherAppPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAppPresenter.swift; sourceTree = "<group>"; };
-		D74C35EA26C56B4300823255 /* WeatherAppInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAppInteractor.swift; sourceTree = "<group>"; };
+		D74C35EA26C56B4300823255 /* NetworkLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLayer.swift; sourceTree = "<group>"; };
 		D7A6904E26C4212700EE3F1E /* WeatherRealmModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRealmModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -135,7 +135,7 @@
 		D74C35E226C5668A00823255 /* WeatherAppView */ = {
 			isa = PBXGroup;
 			children = (
-				D74C35E926C56B2B00823255 /* Interactor */,
+				D74C35E926C56B2B00823255 /* NetworkLayer */,
 				D74C35E126C5668000823255 /* Presenter */,
 				D74C35E326C5669E00823255 /* ViewController */,
 			);
@@ -151,12 +151,12 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
-		D74C35E926C56B2B00823255 /* Interactor */ = {
+		D74C35E926C56B2B00823255 /* NetworkLayer */ = {
 			isa = PBXGroup;
 			children = (
-				D74C35EA26C56B4300823255 /* WeatherAppInteractor.swift */,
+				D74C35EA26C56B4300823255 /* NetworkLayer.swift */,
 			);
-			path = Interactor;
+			path = NetworkLayer;
 			sourceTree = "<group>";
 		};
 		D7A6904C26C420FE00EE3F1E /* Models */ = {
@@ -296,7 +296,7 @@
 				D74C35E526C566B400823255 /* WeatherAppPresenter.swift in Sources */,
 				D74C35E026C565AC00823255 /* Interactor.swift in Sources */,
 				D7A6904F26C4212700EE3F1E /* WeatherRealmModel.swift in Sources */,
-				D74C35EB26C56B4300823255 /* WeatherAppInteractor.swift in Sources */,
+				D74C35EB26C56B4300823255 /* NetworkLayer.swift in Sources */,
 				D74C35D826C52B5B00823255 /* WeatherJson.swift in Sources */,
 				D70D5E9826C3DC190050C310 /* SceneDelegate.swift in Sources */,
 				D74C35DE26C55E6500823255 /* RealmDataBase.swift in Sources */,

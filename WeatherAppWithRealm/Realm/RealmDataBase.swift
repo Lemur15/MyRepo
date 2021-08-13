@@ -48,4 +48,14 @@ final class RealmDataBase {
         
         self.realmWeatherModel = realm.objects(WeatherDB.self)
     }
+    
+    func getObject(completion: @escaping (String?) -> Void) {
+        let objects = realm.objects(WeatherDB.self)
+        completion(objects.first?.main)
+    }
+    
+    var dataBaseIsEmpty: Bool {
+        realm.objects(WeatherDB.self).isEmpty
+    }
+    
 }
