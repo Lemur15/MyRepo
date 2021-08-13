@@ -15,7 +15,7 @@ public struct WelcomeJson: Codable {
     var timezone, id: Int
     var name: String
     var cod: Int
-    var weather: WeatherJson?
+    var weather: [WeatherJson]?
     
     enum CodingKeys: String, CodingKey, CaseIterable {
         
@@ -40,10 +40,10 @@ public struct WelcomeJson: Codable {
         id = try container.decode(Int.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
         cod = try container.decode(Int.self, forKey: .cod)
-        weather = try container.decode(WeatherJson.self, forKey: .weather)
+        weather = try container.decode([WeatherJson].self, forKey: .weather)
     }
     
-    init(base: String, visibility: Int, dt: Int, timezone: Int, id: Int, name: String, cod: Int, weather: WeatherJson?) {
+    init(base: String, visibility: Int, dt: Int, timezone: Int, id: Int, name: String, cod: Int, weather: [WeatherJson]?) {
         
         self.base = base
         self.visibility = visibility
@@ -53,20 +53,5 @@ public struct WelcomeJson: Codable {
         self.name = name
         self.cod = cod
         self.weather = weather
-    }
-    
-    public init(dbModel: StoredWelcome) {
-        
-        self.base = dbModel.base
-        self.visibility = dbModel.visibility
-        self.dt = dbModel.dt
-        self.cod = dbModel.cod
-        self.timezone = dbModel.timezone
-        self.id = dbModel.id
-        self.name = dbModel.name
-        
-        if let weather = dbModel.weather {
-            self.weather = WeatherJson(dbModel: weather)
-        }
     }
 }
